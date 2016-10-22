@@ -1,0 +1,20 @@
+{
+  "name": "public",
+  "homepage": "https://github.com/jag28020/thirsty",
+  "authors": [
+    "Jake Greenstein <jag28020@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
+}
