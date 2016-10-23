@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html ng-app="Thirsty" ng-controller="HomeController" ng-init="init()" lang="en">
     <head>
         <meta charset="utf-8">
         <title>Foundry Multi-purpose HTML Template</title>
@@ -646,10 +646,10 @@
                     <div class="row mb80 mb-xs-0">
                         <div class="col-md-8 col-md-offset-2 text-center">
                             <h1>Sleek, Flexible & Stylish.</h1>
-                            <form action="/api/venue" method="POST">
-                                <input type="text" name="name" placeholder="Name" />
-                                <input type="text" name="hours" placeholder="Hours" />
-                                <input type="submit"/>
+                            <form>
+                                <input ng-model="venueSearch.name" type="text" name="name" placeholder="Name" />
+                                <input ng-model="venueSearch.hours" type="text" name="hours" placeholder="Hours" />
+                                <input ng-click="search()" type="submit"/>
                             </form>
                         </div>
                     </div>
@@ -1083,5 +1083,10 @@
         <script src="js/smooth-scroll.min.js"></script>
         <script src="js/parallax.js"></script>
         <script src="js/scripts.js"></script>
+
+        <script src="/bower_components/angular/angular.min.js"></script>
+        <script src="/app/app.js"></script>
+        <script src="/app/controllers/home.js"></script>
+
     </body>
 </html>

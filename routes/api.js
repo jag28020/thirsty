@@ -24,42 +24,52 @@ function createResult(result){
 }
 
 router.post('/sms', function(req, res, next){
-	var twiml = new twilio.TwimlResponse();
-	console.log(JSON.stringify(req.body));
-    twiml.message="Hey it's Jake!" ;
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
-    return
-})
-
-router.post('/:resource', function(req, res, next){
-	var resource = req.params.resource
-	if(resource=='venue'){
-		Venue.create(req.body, function(err, result){
+	var twiml = new twilio.TwimlResponse()
+	var name = req.body.Body.trim().toLowerCase()
+	Venue.findOne(name, function(err, result){
 			if (err){
-				res.json(createError(err.message))
+				twiml.message=JSON.stringify(err.message) ;
+			    res.writeHead(200, {'Content-Type': 'text/xml'});
+			    res.end(twiml.toString());
 				return
 			}
-			if(!result){
-				res.json(createError('Error'))
+			if (!result){
+				twiml.message="Venue not found" ;
+			    res.writeHead(200, {'Content-Type': 'text/xml'});
+			    res.end(twiml.toString());
 				return
 			}
-			client.messages.create({
-			    body: JSON.stringify(result),
-			    to: '+12017887261',  // Text this number
-			    from: '+12012920361' // From a valid Twilio number
-			}, function(err, message) {
-			    console.log(message.sid);
-			});
-			res.json(createResult(result))
+			twiml.message="Success! Found venue " + name ;
+		    res.writeHead(200, {'Content-Type': 'text/xml'});
+		    res.end(twiml.toString());
 			return
-		})
+		});
 		return
-	}
-
-	res.json(createError('Invalid resource'))
-	return
 })
+
+router.post('/venue', function(req, res, next){
+
+	Venue.create(req.body, function(err, result){
+		if (err){
+			res.json(createError(err.message))
+			return
+		}
+		if(!result){
+			res.json(createError('Error'))
+			return
+		}
+		client.messages.create({
+		    body: JSON.stringify(result),
+		    to: '+12017887261',  // Text this number
+		    from: '+12012920361' // From a valid Twilio number
+		}, function(err, message) {
+		    console.log(message.sid);
+		});
+		res.json(createResult(result))
+		return
+	})
+	return
+});
 
 router.get('/:resource', function(req, res, next) {
 	var resource = req.params.resource;
